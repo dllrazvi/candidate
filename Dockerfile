@@ -1,20 +1,23 @@
-# Imagine de bază
+# 1. Imagine de bază cu Node
 FROM node:20
 
-# Setează directorul de lucru
+# 2. Setează directorul de lucru
 WORKDIR /app
 
-# Copiază fișierele
-COPY . .
+# 3. Copiază package.json și package-lock.json mai întâi (bun pentru cache)
+COPY package*.json ./
 
-# Instalează dependențele
+# 4. Instalează toate dependențele, inclusiv typescript
 RUN npm install
 
-# Compilează TypeScript
+# 5. Apoi copiază tot proiectul
+COPY . .
+
+# 6. Compilează proiectul
 RUN npx tsc
 
-# Expune portul
+# 7. Expune portul
 EXPOSE 3000
 
-# Rulează aplicația
+# 8. Rulează aplicația
 CMD ["node", "dist/index.js"]
